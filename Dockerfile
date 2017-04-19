@@ -24,11 +24,7 @@ WORKDIR /repo
 # Install vendor
 COPY ./composer.json /repo/composer.json
 
-# Install composer
-ENV COMPOSER_ALLOW_SUPERUSER=1
-RUN composer global require --optimize-autoloader \
-        "hirak/prestissimo" && \
-  composer install --prefer-dist --optimize-autoloader
+RUN composer install --prefer-dist --optimize-autoloader
 
 # Add source-code
 COPY . /repo
