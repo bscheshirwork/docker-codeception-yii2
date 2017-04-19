@@ -13,9 +13,9 @@ Supported tags and respective `Dockerfile` links
 
 FROM `bscheshir/php:fpm-4yii2-xdebug` [bscheshir/docker-php](https://github.com/bscheshirwork/docker-php)
 
-tag: `{sourceref}-fpm-yii2`
+tag: `php{sourceref}-fpm-yii2`
 
-`docker pull bscheshir/codeception:7.1.4-fpm-yii2`
+`docker pull bscheshir/codeception:php7.1.4-fpm-yii2`
 
 
 ## How to create
