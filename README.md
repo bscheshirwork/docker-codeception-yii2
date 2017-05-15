@@ -9,7 +9,7 @@ Supported tags and respective `Dockerfile` links
 
 ## for yii2 
 
-- `7.1.4-fpm-yii2`, `fpm-yii2` ([Dockerfile](./Dockerfile))
+- `7.1.5-fpm-yii2`, `fpm-yii2` ([Dockerfile](./Dockerfile))
 
 FROM `bscheshir/php:fpm-4yii2-xdebug` [bscheshir/docker-php](https://github.com/bscheshirwork/docker-php)
 
@@ -23,8 +23,8 @@ tag: `php{sourceref}-fpm-yii2`
 cd /home/dev/projects/docker-codeception-yii2/build/
 git pull
 cp ../Dockerfile ../composer.json ./ 
-docker build --no-cache -t bscheshir/codeception:php7.1.4-fpm-yii2 -t bscheshir/codeception:php-fpm-yii2 .
-docker push bscheshir/codeception:php7.1.4-fpm-yii2
+docker build --no-cache -t bscheshir/codeception:php7.1.5-fpm-yii2 -t bscheshir/codeception:php-fpm-yii2 .
+docker push bscheshir/codeception:php7.1.5-fpm-yii2
 docker push bscheshir/codeception:php-fpm-yii2
 git checkout -- .
 ```
