@@ -23,6 +23,7 @@ tag: `php{sourceref}-fpm-yii2`
 cd /home/dev/projects/docker-codeception-yii2/build/
 git pull
 cp ../Dockerfile ../composer.json ./ 
+docker pull bscheshir/php:fpm-4yii2-xdebug
 docker build --no-cache -t bscheshir/codeception:php7.1.9-fpm-yii2 -t bscheshir/codeception:php-fpm-yii2 .
 docker push bscheshir/codeception:php7.1.9-fpm-yii2
 docker push bscheshir/codeception:php-fpm-yii2
