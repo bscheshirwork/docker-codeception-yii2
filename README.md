@@ -9,13 +9,13 @@ Supported tags and respective `Dockerfile` links
 
 ## for yii2 
 
-- `7.1.8-fpm-yii2`, `fpm-yii2` ([Dockerfile](./Dockerfile))
+- `php7.1.8-fpm-yii2`, `php-fpm-yii2` ([Dockerfile](./Dockerfile))
 
 FROM `bscheshir/php:fpm-4yii2-xdebug` [bscheshir/docker-php](https://github.com/bscheshirwork/docker-php)
 
 tag: `php{sourceref}-fpm-yii2`
 
-`docker pull bscheshir/codeception:php7.1.8-fpm-yii2`
+`docker pull bscheshir/codeception:php7.1.9-fpm-yii2`
 
 
 ## How to create
@@ -23,8 +23,8 @@ tag: `php{sourceref}-fpm-yii2`
 cd /home/dev/projects/docker-codeception-yii2/build/
 git pull
 cp ../Dockerfile ../composer.json ./ 
-docker build --no-cache -t bscheshir/codeception:php7.1.8-fpm-yii2 -t bscheshir/codeception:php-fpm-yii2 .
-docker push bscheshir/codeception:php7.1.8-fpm-yii2
+docker build --no-cache -t bscheshir/codeception:php7.1.9-fpm-yii2 -t bscheshir/codeception:php-fpm-yii2 .
+docker push bscheshir/codeception:php7.1.9-fpm-yii2
 docker push bscheshir/codeception:php-fpm-yii2
 git checkout -- .
 ```
@@ -32,7 +32,7 @@ git checkout -- .
 Where
 `Dockerfile`: based on php7 for Yii2 docker image
 ```
-sed -i -e "s/^FROM.*/FROM bscheshir\/php:7.1.8-fpm-4yii2/" Dockerfile
+sed -i -e "s/^FROM.*/FROM bscheshir\/php:7.1.9-fpm-4yii2/" Dockerfile
 ```
 
 `composer.json`: require `codeception/specify`, `codeception/verify`
@@ -72,7 +72,7 @@ external run
 Composition volumes `project` and `.composer/cache` (in `docker-compose.yml`):
 ```
   codecept:
-    image: bscheshir/codeception:7.1.8-fpm-4yii2
+    image: bscheshir/codeception:php7.1.9-fpm-yii2
     depends_on:
       - php
     environment:
@@ -93,7 +93,7 @@ docker cp dockercodeceptionrun_codecept_run_1:/repo/ .codecept
 selenium in `docker-compose.yml`
 ```
   firefox:
-    image: selenium/standalone-firefox-debug:3.3.1
+    image: selenium/standalone-firefox-debug:3.5.2
     ports:
       - '4444'
       - '5900'
@@ -101,7 +101,7 @@ selenium in `docker-compose.yml`
 or
 ```
   chrome:
-    image: selenium/standalone-chrome-debug:3.3.1
+    image: selenium/standalone-chrome-debug:3.5.2
     volumes:
       - /dev/shm:/dev/shm # the docker run instance may use the default 64MB, that may not be enough in some cases
     ports:
@@ -172,7 +172,7 @@ if ((ip2long(@$_SERVER['REMOTE_ADDR']) ^ ip2long(@$_SERVER['SERVER_ADDR'])) >= 2
 version: '2'
 services:
   php:
-    image: bscheshir/php:7.1.8-fpm-4yii2-xdebug
+    image: bscheshir/php:7.1.9-fpm-4yii2-xdebug
     restart: always
     volumes:
       - ../php-code:/var/www/html #php-code
@@ -208,7 +208,7 @@ services:
       MYSQL_USER: yii2advanced
       MYSQL_PASSWORD: yii2advanced
   codecept:
-    image: bscheshir/codeception:php7.1.8-fpm-yii2
+    image: bscheshir/codeception:php7.1.9-fpm-yii2
     depends_on:
       - nginx
       - chrome
@@ -219,7 +219,7 @@ services:
       - ../php-code:/project
       - ~/.composer/cache:/root/.composer/cache
   chrome:
-    image: selenium/standalone-chrome-debug:3.3.1
+    image: selenium/standalone-chrome-debug:3.5.2
     volumes:
       - /dev/shm:/dev/shm # the docker run instance may use the default 64MB, that may not be enough in some cases
     ports:
