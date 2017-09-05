@@ -9,7 +9,7 @@ Supported tags and respective `Dockerfile` links
 
 ## for yii2 
 
-- `php7.1.8-fpm-yii2`, `php-fpm-yii2` ([Dockerfile](./Dockerfile))
+- `php7.1.9-fpm-yii2`, `php-fpm-yii2` ([Dockerfile](./Dockerfile))
 
 FROM `bscheshir/php:fpm-4yii2-xdebug` [bscheshir/docker-php](https://github.com/bscheshirwork/docker-php)
 
