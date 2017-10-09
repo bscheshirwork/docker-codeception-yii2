@@ -1,5 +1,5 @@
 FROM bscheshir/php:fpm-4yii2-xdebug
-# -t bscheshir/codeception:php-fpm-yii2 .
+# docker build -t bscheshir/codeception:php-fpm-yii2 .
 MAINTAINER BSCheshir <bscheshir.work@gmail.com>
 
 # Install required system packages
@@ -23,7 +23,6 @@ WORKDIR /repo
 
 # Install vendor
 COPY ./composer.json /repo/composer.json
-
 RUN composer install --prefer-dist --optimize-autoloader
 
 # Add source-code
