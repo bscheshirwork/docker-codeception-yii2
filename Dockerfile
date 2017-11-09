@@ -32,5 +32,5 @@ ENV PATH /repo:${PATH}
 ENTRYPOINT ["codecept"]
 
 # Prepare host-volume working directory
-RUN mkdir /project
-WORKDIR /project
+RUN mkdir -p /var/www/html
+WORKDIR /var/www/html

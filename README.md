@@ -46,6 +46,10 @@ sed -i -e "s/^FROM.*/FROM bscheshir\/php:7.1.11-fpm-4yii2/" Dockerfile
     }
 ```
 
+> Note: change workdir from `/project` to `/var/www/html`. 
+This workdir is same in `php` and `nginx` container (in other yii2-based projects).
+Can be use acceptance tests with same absolute path and merged "local" and "c3.php local" codecoverage. 
+
 ## Usage
 
 Development bash
