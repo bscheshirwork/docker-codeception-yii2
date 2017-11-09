@@ -19,8 +19,10 @@ tag: `php{sourceref}-fpm-yii2`
 
 
 ## How to create
+> Note: for https://github.com/Codeception/Codeception.git `master` is deprecated. Use last tag instead (2.3)
 ```
 cd /home/dev/projects/docker-codeception-yii2/build/
+git checkout 2.3
 git pull
 cp ../Dockerfile ../composer.json ./ 
 docker pull bscheshir/php:fpm-4yii2-xdebug
