@@ -25,10 +25,10 @@ cd /home/dev/projects/docker-codeception-yii2/build/
 git checkout 2.3
 git pull
 cp ../Dockerfile ../composer.json ./ 
-docker pull bscheshir/php:fpm-4yii2-xdebug
-docker build --pull --no-cache -t bscheshir/codeception:php7.2.1-fpm-yii2 -t bscheshir/codeception:php-fpm-yii2 -- .
-docker push bscheshir/codeception:php7.2.1-fpm-yii2
-docker push bscheshir/codeception:php-fpm-yii2
+docker pull bscheshir/php:fpm-alpine-4yii2-xdebug
+docker build --pull --no-cache -t bscheshir/codeception:php7.2.1-fpm-alpine-yii2 -t bscheshir/codeception:php-fpm-alpine-yii2 -- .
+docker push bscheshir/codeception:php7.2.1-fpm-alpine-yii2
+docker push bscheshir/codeception:php-fpm-alpine-yii2
 git checkout -- .
 ```
 
