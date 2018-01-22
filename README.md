@@ -52,6 +52,19 @@ sed -i -e "s/^FROM.*/FROM bscheshir\/php:7.2.1-fpm-4yii2/" Dockerfile
 This workdir is same in `php` and `nginx` container (in other yii2-based projects).
 Can be use acceptance tests with same absolute path and merged "local" and "c3.php local" codecoverage. 
 
+## codecept.phar
+This repo can't modify `codecept.phar`. Origin link for PHP 7.x: `wget http://codeception.com/codecept.phar`
+
+If you need you changes in "mothership" part of c3.php on "remote" server 
+use [robo](http://robo.li/) like this (set `php.ini` option `phar.readonly = false`)
+```
+docker-compose -f ~/projects/docker-yii2-app-advanced-rbac/docker-codeception-run/docker-compose.yml run --rm --entrypoint bash codecept
+cd /repo 
+wget http://robo.li/robo.phar
+sudo chmod +x robo.phar && mv robo.phar /usr/bin/robo
+robo build:phar
+```
+
 ## Usage
 
 Development bash
