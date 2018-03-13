@@ -18,9 +18,9 @@ tag: `php{sourceref}-fpm-yii2`
 `docker pull bscheshir/codeception:php7.2.3-fpm-yii2`
 
 
-## How to create
+## How to create it
 > Note: for https://github.com/Codeception/Codeception.git `master` is deprecated. Use last tag instead (2.3)
-```
+```sh
 cd /home/dev/projects/docker-codeception-yii2/build/
 git checkout 2.3
 git pull
@@ -34,13 +34,13 @@ git checkout -- .
 
 Where
 `Dockerfile`: based on php7 for Yii2 docker image
-```
+```sh
 sed -i -e "s/^FROM.*/FROM bscheshir\/php:7.2.3-fpm-4yii2/" Dockerfile
 ```
 
 `composer.json`: require `codeception/specify`, `codeception/verify`
 
-```
+```json
     "require": {
 ...
         "codeception/specify": "*",
@@ -57,7 +57,7 @@ This repo can't modify `codecept.phar`. Origin link for PHP 7.x: `wget http://co
 
 If you need you changes in "mothership" part of c3.php on "remote" server 
 use [robo](http://robo.li/) like this (set `php.ini` option `phar.readonly = false`)
-```
+```sh
 docker-compose -f ~/projects/docker-yii2-app-advanced-rbac/docker-codeception-run/docker-compose.yml run --rm --entrypoint bash codecept
 cd /repo 
 wget http://robo.li/robo.phar
@@ -68,7 +68,7 @@ robo build:phar
 ## Usage
 
 Development bash
-```
+```sh
 docker-codeception-run$ docker-compose run --rm --entrypoint bash codecept
 ```
 
@@ -78,19 +78,19 @@ see [Parallel Execution](http://codeception.com/docs/12-ParallelExecution)
 
 
 yii2-advanced tests inside `backend` `frontend` `console` folder
-```
-/usr/local/bin/docker-compose -i /home/dev/projects/yii2advanced/docker-codeception-run/docker-compose.yml run --rm --entrypoint bash codecept
+```sh
+/usr/local/bin/docker-compose -i /home/dev/projects/docker-yii2-app-advanced-rbac/docker-codeception-run/docker-compose.yml run --rm --entrypoint bash codecept
 root@e870b32bc227:/project# cd frontend/; codecept run acceptance HomeCest
 ```
 
 external run
-```
+```sh
 /usr/local/bin/docker-compose -f /path/to/codeception/docker-compose.yml run --rm codecept run -g paracept_1 --html result_1.html
 ```
 
 ### volumes
 Composition volumes `project` and `.composer/cache` (in `docker-compose.yml`):
-```
+```yml
   codecept:
     image: bscheshir/codeception:php7.2.3-fpm-yii2
     depends_on:
@@ -105,36 +105,38 @@ Composition volumes `project` and `.composer/cache` (in `docker-compose.yml`):
 
 ## autocomplit
 For smart IDE autocomplete copy source from the running container to `.codecept` using `docker cp` tools
-```
+```sh
 docker cp dockercodeceptionrun_codecept_run_1:/repo/ .codecept
 ```
 
 ### Selenium
 selenium in `docker-compose.yml`
-```
+```yml
   browser:
-    image: selenium/standalone-firefox-debug:3.10.0
+    image: selenium/standalone-firefox-debug:3.11.0
     ports:
       - '4444'
       - '5900'
 ```
 or
-```
+```yml
   browser:
-    image: selenium/standalone-chrome-debug:3.10.0
+    image: selenium/standalone-chrome-debug:3.11.0
     volumes:
       - /dev/shm:/dev/shm # the docker run instance may use the default 64MB, that may not be enough in some cases
     ports:
       - '4444'
       - '5900'
 ```
+> note: last stable comparability version is a 3.7. 
+Wait for fix for newest 3.11.0
 
 `codecept` service depends on `selenium` service
 
 
 configure `acceptance.suite.yml` in `frontend/tests` like
-```
-class_name: AcceptanceTester
+```yml
+actor: AcceptanceTester
 modules:
     enabled:
 # See docker-codeception-run/docker-compose.yml: "ports" of service "nginx" is null; the selenium service named "firefox"
@@ -148,8 +150,8 @@ modules:
             part: init
 ```
 or
-```
-class_name: AcceptanceTester
+```yml
+actor: AcceptanceTester
 modules:
     enabled:
 # See docker-codeception-run/docker-compose.yml: "ports" of service "nginx" is null; the selenium service named "chrome"
@@ -174,13 +176,13 @@ modules:
 ### yii2 index-test.php docker selenium access
 After run yii2 `init` script you must change local entrypoint files 
 `php-code/backend/web/index-test.php`, `php-code/frontend/web/index-test.php` for granted access from service firefox.
-```
+```php
 if (!in_array(@$_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1'])) {
     die('You are not allowed to access this file.');
 }
 ```
 ->
-```
+```php
 //check if not in same subnet /16 (255.255.0.0)
 if ((ip2long(@$_SERVER['REMOTE_ADDR']) ^ ip2long(@$_SERVER['SERVER_ADDR'])) >= 2 ** 16) {
     die('You are not allowed to access this file.');
@@ -188,7 +190,7 @@ if ((ip2long(@$_SERVER['REMOTE_ADDR']) ^ ip2long(@$_SERVER['SERVER_ADDR'])) >= 2
 ```
 
 ### yii2 [docker-compose.yml](https://github.com/bscheshirwork/docker-yii2-app-advanced/blob/master/docker-codeception-run/docker-compose.yml)
-```
+```yml
 version: '2'
 services:
   php:
@@ -240,7 +242,7 @@ services:
       - ~/.composer/cache:/root/.composer/cache
   browser:
     image: selenium/standalone-chrome-debug:3.7 # avoid bug in latest
-#    image: selenium/standalone-firefox-debug:3.10.0
+#    image: selenium/standalone-firefox-debug:3.11.0
     volumes:
       - /dev/shm:/dev/shm # the docker run instance may use the default 64MB, that may not be enough in some cases
     ports:
