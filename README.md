@@ -203,7 +203,7 @@ services:
       - db
     environment:
       TZ: Europe/Moscow
-      XDEBUG_CONFIG: "remote_host=192.168.0.83 remote_port=9001 var_display_max_data=1024 var_display_max_depth=5"
+      XDEBUG_CONFIG: "remote_host=dev-Aspire-V3-772 remote_port=9001 var_display_max_data=1024 var_display_max_depth=5"
       PHP_IDE_CONFIG: "serverName=yii2advanced"
   nginx:
     image: nginx:1.13.10-alpine
@@ -235,7 +235,7 @@ services:
       - nginx
       - browser
     environment:
-      XDEBUG_CONFIG: "remote_host=192.168.0.83 remote_port=9002 remote_enable=On"
+      XDEBUG_CONFIG: "remote_host=dev-Aspire-V3-772 remote_port=9002 remote_enable=On"
       PHP_IDE_CONFIG: "serverName=codeception"
     volumes:
       - ../php-code:/project
