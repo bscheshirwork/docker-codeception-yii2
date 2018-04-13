@@ -19,11 +19,11 @@ tag: `php{sourceref}-fpm-yii2`
 
 
 ## How to create it
-> Note: for https://github.com/Codeception/Codeception.git `master` is deprecated. Use last tag instead (2.3)
+> Note: for https://github.com/Codeception/Codeception.git `master` is deprecated. Use last tag instead (2.4)
 ```sh
 cd /home/dev/projects/docker-codeception-yii2/build/
-git checkout 2.3
-git pull
+git checkout build
+git pull parent 2.4
 cp ../Dockerfile ../composer.json ./ 
 docker pull bscheshir/php:fpm-alpine-4yii2-xdebug
 docker build --pull --no-cache -t bscheshir/codeception:php7.2.4-fpm-alpine-yii2 -t bscheshir/codeception:php-fpm-alpine-yii2 -- .
@@ -206,7 +206,7 @@ services:
       XDEBUG_CONFIG: "remote_host=dev-Aspire-V3-772 remote_port=9001 var_display_max_data=1024 var_display_max_depth=5"
       PHP_IDE_CONFIG: "serverName=yii2advanced"
   nginx:
-    image: nginx:1.13.11-alpine
+    image: nginx:1.13.12-alpine
     restart: always
     depends_on:
       - php
