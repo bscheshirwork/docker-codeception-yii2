@@ -113,7 +113,7 @@ docker cp dockercodeceptionrun_codecept_run_1:/repo/ .codecept
 selenium in `docker-compose.yml`
 ```yml
   browser:
-    image: selenium/standalone-firefox-debug:3.11.0
+    image: selenium/standalone-firefox-debug:3.12.0
     ports:
       - '4444'
       - '5900'
@@ -121,7 +121,7 @@ selenium in `docker-compose.yml`
 or
 ```yml
   browser:
-    image: selenium/standalone-chrome-debug:3.11.0
+    image: selenium/standalone-chrome-debug:3.12.0
     volumes:
       - /dev/shm:/dev/shm # the docker run instance may use the default 64MB, that may not be enough in some cases
     ports:
@@ -129,7 +129,7 @@ or
       - '5900'
 ```
 > note: last stable comparability version is a 3.7. 
-Wait for fix for newest 3.11.0
+Wait for fix for newest 3.12.0
 
 `codecept` service depends on `selenium` service
 
@@ -242,7 +242,7 @@ services:
       - ~/.composer/cache:/root/.composer/cache
   browser:
     image: selenium/standalone-chrome-debug:3.7 # avoid bug in latest
-#    image: selenium/standalone-firefox-debug:3.11.0
+#    image: selenium/standalone-firefox-debug:3.12.0
     volumes:
       - /dev/shm:/dev/shm # the docker run instance may use the default 64MB, that may not be enough in some cases
     ports:
