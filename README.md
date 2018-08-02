@@ -216,7 +216,7 @@ services:
       - ../nginx-conf:/etc/nginx/conf.d #nginx-conf
       - ../nginx-logs:/var/log/nginx #nginx-logs
   db:
-    image: mysql:8.0.11
+    image: mysql:8.0.12
     entrypoint: ['/entrypoint.sh', '--character-set-server=utf8', '--collation-server=utf8_general_ci']
     restart: always
     ports:
