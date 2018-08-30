@@ -206,7 +206,7 @@ services:
       XDEBUG_CONFIG: "remote_host=dev-Aspire-V3-772 remote_port=9001 var_display_max_data=1024 var_display_max_depth=5"
       PHP_IDE_CONFIG: "serverName=yii2advanced"
   nginx:
-    image: nginx:1.15.2-alpine
+    image: nginx:1.15.3-alpine
     restart: always
     depends_on:
       - php
