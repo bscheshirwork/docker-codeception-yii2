@@ -9,25 +9,25 @@ Supported tags and respective `Dockerfile` links
 
 ## for yii2 
 
-- `php7.2.9-fpm-yii2`, `php-fpm-yii2` ([Dockerfile](./Dockerfile))
+- `php7.2.10-fpm-yii2`, `php-fpm-yii2` ([Dockerfile](./Dockerfile))
 
 FROM `bscheshir/php:fpm-4yii2-xdebug` [bscheshir/docker-php](https://github.com/bscheshirwork/docker-php)
 
 tag: `php{sourceref}-fpm-yii2`
 
-`docker pull bscheshir/codeception:php7.2.9-fpm-yii2`
+`docker pull bscheshir/codeception:php7.2.10-fpm-yii2`
 
 
 ## How to create it
-> Note: for https://github.com/Codeception/Codeception.git `master` is deprecated. Use last tag instead (2.4)
+> Note: for https://github.com/Codeception/Codeception.git `master` is deprecated. Use last tag instead (2.5)
 ```sh
 cd /home/dev/projects/docker-codeception-yii2/build/
 git checkout build
-git pull parent 2.4
+git pull parent 2.5
 cp ../Dockerfile ../composer.json ./ 
 docker pull bscheshir/php:fpm-alpine-4yii2-xdebug
-docker build --pull --no-cache -t bscheshir/codeception:php7.2.9-fpm-alpine-yii2 -t bscheshir/codeception:php-fpm-alpine-yii2 -- .
-docker push bscheshir/codeception:php7.2.9-fpm-alpine-yii2
+docker build --pull --no-cache -t bscheshir/codeception:php7.2.10-fpm-alpine-yii2 -t bscheshir/codeception:php-fpm-alpine-yii2 -- .
+docker push bscheshir/codeception:php7.2.10-fpm-alpine-yii2
 docker push bscheshir/codeception:php-fpm-alpine-yii2
 git checkout -- .
 ```
@@ -35,7 +35,7 @@ git checkout -- .
 Where
 `Dockerfile`: based on php7 for Yii2 docker image
 ```sh
-sed -i -e "s/^FROM.*/FROM bscheshir\/php:7.2.9-fpm-4yii2/" Dockerfile
+sed -i -e "s/^FROM.*/FROM bscheshir\/php:7.2.10-fpm-4yii2/" Dockerfile
 ```
 
 `composer.json`: require `codeception/specify`, `codeception/verify`
@@ -92,7 +92,7 @@ external run
 Composition volumes `project` and `.composer/cache` (in `docker-compose.yml`):
 ```yml
   codecept:
-    image: bscheshir/codeception:php7.2.9-fpm-yii2
+    image: bscheshir/codeception:php7.2.10-fpm-yii2
     depends_on:
       - php
     environment:
@@ -194,7 +194,7 @@ if ((ip2long(@$_SERVER['REMOTE_ADDR']) ^ ip2long(@$_SERVER['SERVER_ADDR'])) >= 2
 version: '2'
 services:
   php:
-    image: bscheshir/php:7.2.9-fpm-4yii2-xdebug
+    image: bscheshir/php:7.2.10-fpm-4yii2-xdebug
     restart: always
     volumes:
       - ../php-code:/var/www/html #php-code
@@ -206,7 +206,7 @@ services:
       XDEBUG_CONFIG: "remote_host=dev-Aspire-V3-772 remote_port=9001 var_display_max_data=1024 var_display_max_depth=5"
       PHP_IDE_CONFIG: "serverName=yii2advanced"
   nginx:
-    image: nginx:1.15.3-alpine
+    image: nginx:1.15.5-alpine
     restart: always
     depends_on:
       - php
@@ -230,7 +230,7 @@ services:
       MYSQL_USER: yii2advanced
       MYSQL_PASSWORD: yii2advanced
   codecept:
-    image: bscheshir/codeception:php7.2.9-fpm-yii2
+    image: bscheshir/codeception:php7.2.10-fpm-yii2
     depends_on:
       - nginx
       - browser
@@ -242,7 +242,7 @@ services:
       - ~/.composer/cache:/root/.composer/cache
   browser:
     image: selenium/standalone-chrome-debug:3.7 # avoid bug in latest
-#    image: selenium/standalone-firefox-debug:3.12.0
+#    image: selenium/standalone-firefox-debug:3.14.0
     volumes:
       - /dev/shm:/dev/shm # the docker run instance may use the default 64MB, that may not be enough in some cases
     ports:
