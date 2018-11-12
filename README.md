@@ -9,13 +9,13 @@ Supported tags and respective `Dockerfile` links
 
 ## for yii2 
 
-- `php7.2.11-fpm-yii2`, `php-fpm-yii2` ([Dockerfile](./Dockerfile))
+- `php7.2.12-fpm-yii2`, `php-fpm-yii2` ([Dockerfile](./Dockerfile))
 
 FROM `bscheshir/php:fpm-4yii2-xdebug` [bscheshir/docker-php](https://github.com/bscheshirwork/docker-php)
 
 tag: `php{sourceref}-fpm-yii2`
 
-`docker pull bscheshir/codeception:php7.2.11-fpm-yii2`
+`docker pull bscheshir/codeception:php7.2.12-fpm-yii2`
 
 
 ## How to create it
@@ -26,8 +26,8 @@ git checkout build
 git pull parent 2.5
 cp ../Dockerfile ../composer.json ./ 
 docker pull bscheshir/php:fpm-alpine-4yii2-xdebug
-docker build --pull --no-cache -t bscheshir/codeception:php7.2.11-fpm-alpine-yii2 -t bscheshir/codeception:php-fpm-alpine-yii2 -- .
-docker push bscheshir/codeception:php7.2.11-fpm-alpine-yii2
+docker build --pull --no-cache -t bscheshir/codeception:php7.2.12-fpm-alpine-yii2 -t bscheshir/codeception:php-fpm-alpine-yii2 -- .
+docker push bscheshir/codeception:php7.2.12-fpm-alpine-yii2
 docker push bscheshir/codeception:php-fpm-alpine-yii2
 git checkout -- .
 ```
@@ -35,7 +35,7 @@ git checkout -- .
 Where
 `Dockerfile`: based on php7 for Yii2 docker image
 ```sh
-sed -i -e "s/^FROM.*/FROM bscheshir\/php:7.2.11-fpm-4yii2/" Dockerfile
+sed -i -e "s/^FROM.*/FROM bscheshir\/php:7.2.12-fpm-4yii2/" Dockerfile
 ```
 
 `composer.json`: require `codeception/specify`, `codeception/verify`
@@ -92,15 +92,22 @@ external run
 Composition volumes `project` and `.composer/cache` (in `docker-compose.yml`):
 ```yml
   codecept:
-    image: bscheshir/codeception:php7.2.11-fpm-yii2
+    image: bscheshir/codeception:php7.2.12-fpm-yii2
     depends_on:
       - php
     environment:
-      XDEBUG_CONFIG: "remote_host=192.168.0.241 remote_port=9002 remote_enable=On"
-      PHP_IDE_CONFIG: "serverName=codeception"
+      TZ: Europe/Moscow
+      XDEBUG_CONFIG: "remote_host=${DEV_REMOTE_HOST} remote_port=${DEV_REMOTE_PORT_CODECEPTION} remote_enable=On"
+      PHP_IDE_CONFIG: "serverName=${DEV_SERVER_NAME_CODECEPTION}"
     volumes:
       - ../php-code:/project
       - ~/.composer/cache:/root/.composer/cache
+```
+where `.env` content is
+```ini
+DEV_REMOTE_HOST=192.168.0.241
+DEV_REMOTE_PORT_CODECEPTION=9002
+DEV_SERVER_NAME_CODECEPTION=codeception
 ```
 
 ## autocomplit
@@ -113,7 +120,7 @@ docker cp dockercodeceptionrun_codecept_run_1:/repo/ .codecept
 selenium in `docker-compose.yml`
 ```yml
   browser:
-    image: selenium/standalone-firefox-debug:3.12.0
+    image: selenium/standalone-firefox-debug:3.7.0
     ports:
       - '4444'
       - '5900'
@@ -121,7 +128,7 @@ selenium in `docker-compose.yml`
 or
 ```yml
   browser:
-    image: selenium/standalone-chrome-debug:3.12.0
+    image: selenium/standalone-chrome-debug:3.7.0
     volumes:
       - /dev/shm:/dev/shm # the docker run instance may use the default 64MB, that may not be enough in some cases
     ports:
@@ -129,7 +136,7 @@ or
       - '5900'
 ```
 > note: last stable comparability version is a 3.7. 
-Wait for fix for newest 3.12.0
+Wait for fix for newest
 
 `codecept` service depends on `selenium` service
 
@@ -194,7 +201,7 @@ if ((ip2long(@$_SERVER['REMOTE_ADDR']) ^ ip2long(@$_SERVER['SERVER_ADDR'])) >= 2
 version: '2'
 services:
   php:
-    image: bscheshir/php:7.2.11-fpm-4yii2-xdebug
+    image: bscheshir/php:7.2.12-fpm-4yii2-xdebug
     restart: always
     volumes:
       - ../php-code:/var/www/html #php-code
@@ -203,10 +210,10 @@ services:
       - db
     environment:
       TZ: Europe/Moscow
-      XDEBUG_CONFIG: "remote_host=dev-Aspire-V3-772 remote_port=9001 var_display_max_data=1024 var_display_max_depth=5"
-      PHP_IDE_CONFIG: "serverName=yii2advanced"
+      XDEBUG_CONFIG: "remote_host=${DEV_REMOTE_HOST} remote_port=${DEV_REMOTE_PORT} remote_enable=On var_display_max_data=1024 var_display_max_depth=5"
+      PHP_IDE_CONFIG: "serverName=${DEV_SERVER_NAME}"
   nginx:
-    image: nginx:1.15.5-alpine
+    image: nginx:1.15.6-alpine
     restart: always
     depends_on:
       - php
@@ -216,8 +223,10 @@ services:
       - ../nginx-conf:/etc/nginx/conf.d #nginx-conf
       - ../nginx-logs:/var/log/nginx #nginx-logs
   db:
-    image: mysql:8.0.12
-    entrypoint: ['/entrypoint.sh', '--character-set-server=utf8', '--collation-server=utf8_general_ci']
+    image: mysql:8.0.13
+    entrypoint:
+      - '/entrypoint.sh'
+      - '--default-authentication-plugin=mysql_native_password' # https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_default_authentication_plugin
     restart: always
     ports:
       - "33006:3306"
@@ -230,19 +239,19 @@ services:
       MYSQL_USER: yii2advanced
       MYSQL_PASSWORD: yii2advanced
   codecept:
-    image: bscheshir/codeception:php7.2.11-fpm-yii2
+    image: bscheshir/codeception:php7.2.12-fpm-yii2
     depends_on:
       - nginx
       - browser
     environment:
-      XDEBUG_CONFIG: "remote_host=dev-Aspire-V3-772 remote_port=9002 remote_enable=On"
-      PHP_IDE_CONFIG: "serverName=codeception"
+      TZ: Europe/Moscow
+      XDEBUG_CONFIG: "remote_host=${DEV_REMOTE_HOST} remote_port=${DEV_REMOTE_PORT_CODECEPTION} remote_enable=On"
+      PHP_IDE_CONFIG: "serverName=${DEV_SERVER_NAME_CODECEPTION}"
     volumes:
       - ../php-code:/project
       - ~/.composer/cache:/root/.composer/cache
   browser:
     image: selenium/standalone-chrome-debug:3.7 # avoid bug in latest
-#    image: selenium/standalone-firefox-debug:3.14.0
     volumes:
       - /dev/shm:/dev/shm # the docker run instance may use the default 64MB, that may not be enough in some cases
     ports:
@@ -274,6 +283,6 @@ Change port 9000 to `XDEBUG_CONFIG` `remote_port` value
 
 If you need change source inside container use `docker cp`
 ```
-docker cp .codecept/src/Codeception/Lib/Connector/Yii2.php dockercodeceptionrun_codecept_run_1:/repo/src/Codeception/Lib/Connector/Yii2.php
-docker cp .codecept/src/Codeception/Module/Yii2.php dockercodeceptionrun_codecept_run_1:/repo/src/Codeception/Module/Yii2.php
+docker cp .codecept/src/Codeception/Lib/Connector/Yii2.php dockercodeceptionrun_codecept_run_1_hash:/repo/src/Codeception/Lib/Connector/Yii2.php
+docker cp .codecept/src/Codeception/Module/Yii2.php dockercodeceptionrun_codecept_run_1_hash:/repo/src/Codeception/Module/Yii2.php
 ```
