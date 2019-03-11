@@ -212,7 +212,7 @@ services:
       XDEBUG_CONFIG: "remote_host=${DEV_REMOTE_HOST} remote_port=${DEV_REMOTE_PORT} remote_enable=On var_display_max_data=1024 var_display_max_depth=5"
       PHP_IDE_CONFIG: "serverName=${DEV_SERVER_NAME}"
   nginx:
-    image: nginx:1.15.8-alpine
+    image: nginx:1.15.9-alpine
     restart: always
     depends_on:
       - php
@@ -222,7 +222,7 @@ services:
       - ../nginx-conf:/etc/nginx/conf.d #nginx-conf
       - ../nginx-logs:/var/log/nginx #nginx-logs
   db:
-    image: mysql:8.0.14
+    image: mysql:8.0.15
     entrypoint:
       - '/entrypoint.sh'
       - '--default-authentication-plugin=mysql_native_password' # https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_default_authentication_plugin
