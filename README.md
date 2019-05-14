@@ -22,7 +22,7 @@ tag: `php{sourceref}-fpm-yii2`
 > Note: for https://github.com/Codeception/Codeception.git `master` is deprecated. Use last tag instead (3.0)
 ```sh
 cd /home/dev/projects/docker-codeception-yii2/build/
-git checkout build
+git checkout 3.0
 git pull parent 3.0
 cp ../Dockerfile ../composer.json ./ 
 docker build --pull --no-cache -t bscheshir/codeception:php7.3.5-fpm-alpine-yii2 -t bscheshir/codeception:php-fpm-alpine-yii2 -- .
