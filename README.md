@@ -9,13 +9,13 @@ Supported tags and respective `Dockerfile` links
 
 ## for yii2 
 
-- `php7.3.5-fpm-yii2`, `php-fpm-yii2` ([Dockerfile](./Dockerfile))
+- `php7.3.6-fpm-yii2`, `php-fpm-yii2` ([Dockerfile](./Dockerfile))
 
 FROM `bscheshir/php:fpm-4yii2-xdebug` [bscheshir/docker-php](https://github.com/bscheshirwork/docker-php)
 
 tag: `php{sourceref}-fpm-yii2`
 
-`docker pull bscheshir/codeception:php7.3.5-fpm-yii2`
+`docker pull bscheshir/codeception:php7.3.6-fpm-yii2`
 
 
 ## How to create it
@@ -25,8 +25,8 @@ cd /home/dev/projects/docker-codeception-yii2/build/
 git checkout 3.0
 git pull parent 3.0
 cp ../Dockerfile ../composer.json ./ 
-docker build --pull --no-cache -t bscheshir/codeception:php7.3.5-fpm-alpine-yii2 -t bscheshir/codeception:php-fpm-alpine-yii2 -- .
-docker push bscheshir/codeception:php7.3.5-fpm-alpine-yii2
+docker build --pull --no-cache -t bscheshir/codeception:php7.3.6-fpm-alpine-yii2 -t bscheshir/codeception:php-fpm-alpine-yii2 -- .
+docker push bscheshir/codeception:php7.3.6-fpm-alpine-yii2
 docker push bscheshir/codeception:php-fpm-alpine-yii2
 git checkout -- .
 ```
@@ -34,7 +34,7 @@ git checkout -- .
 Where
 `Dockerfile`: based on php7 for Yii2 docker image
 ```sh
-sed -i -e "s/^FROM.*/FROM bscheshir\/php:7.3.5-fpm-4yii2/" Dockerfile
+sed -i -e "s/^FROM.*/FROM bscheshir\/php:7.3.6-fpm-4yii2/" Dockerfile
 ```
 
 `composer.json`: require `codeception/specify`, `codeception/verify`
@@ -91,7 +91,7 @@ external run
 Composition volumes `project` and `.composer/cache` (in `docker-compose.yml`):
 ```yml
   codecept:
-    image: bscheshir/codeception:php7.3.5-fpm-yii2
+    image: bscheshir/codeception:php7.3.6-fpm-yii2
     depends_on:
       - php
     environment:
@@ -200,7 +200,7 @@ if ((ip2long(@$_SERVER['REMOTE_ADDR']) ^ ip2long(@$_SERVER['SERVER_ADDR'])) >= 2
 version: '2'
 services:
   php:
-    image: bscheshir/php:7.3.5-fpm-4yii2-xdebug
+    image: bscheshir/php:7.3.6-fpm-4yii2-xdebug
     restart: always
     volumes:
       - ../php-code:/var/www/html #php-code
@@ -212,7 +212,7 @@ services:
       XDEBUG_CONFIG: "remote_host=${DEV_REMOTE_HOST} remote_port=${DEV_REMOTE_PORT} remote_enable=On var_display_max_data=1024 var_display_max_depth=5"
       PHP_IDE_CONFIG: "serverName=${DEV_SERVER_NAME}"
   nginx:
-    image: nginx:1.15.12-alpine
+    image: nginx:1.17.0-alpine
     restart: always
     depends_on:
       - php
@@ -238,7 +238,7 @@ services:
       MYSQL_USER: yii2advanced
       MYSQL_PASSWORD: yii2advanced
   codecept:
-    image: bscheshir/codeception:php7.3.5-fpm-yii2
+    image: bscheshir/codeception:php7.3.6-fpm-yii2
     depends_on:
       - nginx
       - browser
