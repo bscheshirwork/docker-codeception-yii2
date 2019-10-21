@@ -16,6 +16,8 @@ WORKDIR /repo
 
 # Install vendor
 COPY ./composer.json /repo/composer.json
+# Add test-code
+COPY ./tests /repo/tests
 RUN composer install --prefer-dist --optimize-autoloader
 
 # Add source-code

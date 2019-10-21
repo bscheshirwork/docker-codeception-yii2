@@ -9,25 +9,25 @@ Supported tags and respective `Dockerfile` links
 
 ## for yii2 
 
-- `php7.3.8-fpm-yii2`, `php-fpm-yii2` ([Dockerfile](./Dockerfile))
+- `php7.3.10-fpm-yii2`, `php-fpm-yii2` ([Dockerfile](./Dockerfile))
 
 FROM `bscheshir/php:fpm-4yii2-xdebug` [bscheshir/docker-php](https://github.com/bscheshirwork/docker-php)
 
 tag: `php{sourceref}-fpm-yii2`
 
-`docker pull bscheshir/codeception:php7.3.8-fpm-yii2`
+`docker pull bscheshir/codeception:php7.3.10-fpm-yii2`
 
 
 ## How to create it
-> Note: for https://github.com/Codeception/Codeception.git `master` is deprecated. Use last tag instead (3.0)
+> Note: for https://github.com/Codeception/Codeception.git `master` is deprecated. Use last tag instead (like a 4.0)
 ```sh
 cd /home/dev/projects/docker-codeception-yii2/build/
 git fetch parent
-git checkout 3.1
-git pull parent 3.1
+git checkout 4.0
+git pull parent 4.0
 cp ../Dockerfile ../composer.json ./ 
-docker build --pull --no-cache -t bscheshir/codeception:php7.3.8-fpm-alpine-yii2 -t bscheshir/codeception:php-fpm-alpine-yii2 -- .
-docker push bscheshir/codeception:php7.3.8-fpm-alpine-yii2
+docker build --pull --no-cache -t bscheshir/codeception:php7.3.10-fpm-alpine-yii2 -t bscheshir/codeception:php-fpm-alpine-yii2 -- .
+docker push bscheshir/codeception:php7.3.10-fpm-alpine-yii2
 docker push bscheshir/codeception:php-fpm-alpine-yii2
 git checkout -- .
 ```
@@ -35,7 +35,7 @@ git checkout -- .
 Where
 `Dockerfile`: based on php7 for Yii2 docker image
 ```sh
-sed -i -e "s/^FROM.*/FROM bscheshir\/php:7.3.8-fpm-4yii2/" Dockerfile
+sed -i -e "s/^FROM.*/FROM bscheshir\/php:7.3.10-fpm-4yii2/" Dockerfile
 ```
 
 `composer.json`: require `codeception/specify`, `codeception/verify`
@@ -92,7 +92,7 @@ external run
 Composition volumes `project` and `.composer/cache` (in `docker-compose.yml`):
 ```yml
   codecept:
-    image: bscheshir/codeception:php7.3.8-fpm-yii2
+    image: bscheshir/codeception:php7.3.10-fpm-yii2
     depends_on:
       - php
     environment:
@@ -199,7 +199,7 @@ if ((ip2long(@$_SERVER['REMOTE_ADDR']) ^ ip2long(@$_SERVER['SERVER_ADDR'])) >= 2
 version: '2'
 services:
   php:
-    image: bscheshir/php:7.3.8-fpm-4yii2-xdebug
+    image: bscheshir/php:7.3.10-fpm-4yii2-xdebug
     restart: always
     volumes:
       - ../php-code:/var/www/html #php-code
@@ -211,7 +211,7 @@ services:
       XDEBUG_CONFIG: "remote_host=${DEV_REMOTE_HOST} remote_port=${DEV_REMOTE_PORT} remote_enable=On var_display_max_data=1024 var_display_max_depth=5"
       PHP_IDE_CONFIG: "serverName=${DEV_SERVER_NAME}"
   nginx:
-    image: nginx:1.17.3-alpine
+    image: nginx:1.17.4-alpine
     restart: always
     depends_on:
       - php
@@ -221,7 +221,7 @@ services:
       - ../nginx-conf:/etc/nginx/conf.d #nginx-conf
       - ../nginx-logs:/var/log/nginx #nginx-logs
   db:
-    image: mysql:8.0.17
+    image: mysql:8.0.18
     entrypoint:
       - '/entrypoint.sh'
       - '--default-authentication-plugin=mysql_native_password' # https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_default_authentication_plugin
@@ -237,7 +237,7 @@ services:
       MYSQL_USER: yii2advanced
       MYSQL_PASSWORD: yii2advanced
   codecept:
-    image: bscheshir/codeception:php7.3.8-fpm-yii2
+    image: bscheshir/codeception:php7.3.10-fpm-yii2
     depends_on:
       - nginx
       - browser
