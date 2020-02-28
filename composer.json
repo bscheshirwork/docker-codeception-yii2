@@ -1,5 +1,6 @@
 {
     "name":"codeception/codeception",
+    "version": "4.0",
     "description":"BDD-style testing framework",
     "keywords":["BDD", "acceptance testing", "functional testing", "unit testing", "tdd"],
     "homepage":"http://codeception.com/",
@@ -34,7 +35,7 @@
         "codeception/verify": "*",
         "codeception/module-filesystem": "^1.0.0",
         "codeception/module-yii2": "^1.0.0",
-        "codeception/module-asserts": "*",
+        "codeception/module-asserts": "^1.0.0",
         "bscheshirwork/codeception-db-yii2-config": "*"
     },
     "require-dev": {
