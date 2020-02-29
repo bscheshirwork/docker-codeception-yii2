@@ -36,6 +36,7 @@
         "codeception/module-filesystem": "^1.0.0",
         "codeception/module-yii2": "^1.0.0",
         "codeception/module-asserts": "^1.0.0",
+        "codeception/module-webdriver": "*",
         "bscheshirwork/codeception-db-yii2-config": "*"
     },
     "require-dev": {
